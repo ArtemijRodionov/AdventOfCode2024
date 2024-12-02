@@ -1,5 +1,6 @@
 
 #include "solutions/01.h"
+#include "solutions/02.h"
 #include "str.h"
 #include "types.h"
 #include <assert.h>
@@ -19,11 +20,12 @@ struct Solution {
 
 static Solution solutions[] = {
     {.mark = "01", .fn = s01},
+    {.mark = "02", .fn = s02},
 };
 
 Solution findSolution(const char *val) {
   Str lookingFor = StrFrom(val);
-  for (usize i = 0; i < 25; i++) {
+  for (usize i = 0; i < sizeof(solutions) / sizeof(Solution); i++) {
     if (StrCmp(StrFrom(solutions[i].mark), lookingFor) == 0) {
       return solutions[i];
     }
