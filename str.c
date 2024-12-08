@@ -118,8 +118,9 @@ Str StrTrim(Str xs, byte val) {
 }
 
 void StrPrint(Str xs) {
-  fprintf(stderr, "len - %ld: ", xs.len);
+  fprintf(stderr, "\"");
   for (usize i = 0; i < xs.len; i++) {
     fprintf(stderr, "%c", xs.data[i]);
   }
+  fprintf(stderr, "\" ");
 }

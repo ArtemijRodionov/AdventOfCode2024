@@ -1,19 +1,51 @@
 #include "../arena.h"
+#include "../math.h"
 #include "../slice.h"
 #include "../str.h"
 #include "../types.h"
 
-static void s02a() {}
+static b32 s02check(StrSplit levels, usize skip) {
+  typedef enum OrderDirection {
+    ORDER_UNKNOWN,
+    ORDER_INCR,
+    ORDER_DECR,
+  } OrderDirection;
 
-static void s02b() {}
+  usize begin = 0;
+  if (skip == begin)
+    begin++;
 
-typedef enum OrderDirection {
-  ORDER_UNKNOWN,
-  ORDER_INCR,
-  ORDER_DECR,
-} OrderDirection;
+  StrParseU32 parsed = StrToU32(levels.data[begin]);
+  assert(!parsed.err);
+  u32 prev = parsed.val;
 
-static void s02(Str xs) {
+  OrderDirection dir = ORDER_UNKNOWN;
+
+  for (usize j = begin + 1; j < levels.len; j++) {
+    if (j == skip)
+      continue;
+
+    StrParseU32 parsed = StrToU32(levels.data[j]);
+    u32 cur = parsed.val;
+
+    OrderDirection levelDir = prev < cur ? ORDER_INCR : ORDER_DECR;
+    if (dir != ORDER_UNKNOWN && dir != levelDir) {
+      return 0;
+    }
+
+    u32 diff = AbsU32(cur, prev);
+    if (diff < 1 || diff > 3) {
+      return 0;
+    }
+
+    prev = cur;
+    dir = levelDir;
+  }
+
+  return 1;
+}
+
+static void s02AllowSkip(Str xs, b32 allowedSkips) {
   Arena t = arena_new(2 << 20);
   StrSplit lines = StrSplitBy(&t, xs, '\n');
 
@@ -22,48 +54,21 @@ static void s02(Str xs) {
   for (usize i = 0; i < lines.len; i++) {
     StrSplit levels = StrSplitBy(&t, lines.data[i], ' ');
 
-    b32 first = 1;
-    b32 safe = 1;
-    u32 prev = 0;
-    OrderDirection dir = ORDER_UNKNOWN;
-
-    for (usize j = 0; j < levels.len; j++) {
-      StrParseU32 parsed = StrToU32(levels.data[j]);
-      assert(!parsed.err);
-      u32 cur = parsed.val;
-      if (first) {
-        first = 0;
-        prev = cur;
-        continue;
-      }
-      if (dir == ORDER_UNKNOWN) {
-        dir = prev < cur ? ORDER_INCR : ORDER_DECR;
-      }
-      u32 diff = 0;
-      if (dir == ORDER_INCR) {
-        if (prev >= cur) {
-          safe = 0;
-          break;
-        }
-        diff = cur - prev;
-      }
-      if (dir == ORDER_DECR) {
-        if (prev <= cur) {
-          safe = 0;
-          break;
-        }
-        diff = prev - cur;
-      }
-      if (diff < 1 || diff > 3) {
-        safe = 0;
-        break;
-      }
-      prev = cur;
-    }
-
-    if (safe) {
+    if (s02check(levels, levels.len)) {
       safeReportsCount++;
+    } else if (allowedSkips) {
+      for (usize i = 0; i < levels.len; i++) {
+        if (s02check(levels, i)) {
+          safeReportsCount++;
+          break;
+        }
+      }
     }
   }
   printf("%ld\n", safeReportsCount);
+}
+
+static void s02(Str xs) {
+  s02AllowSkip(xs, 0);
+  s02AllowSkip(xs, 1);
 }

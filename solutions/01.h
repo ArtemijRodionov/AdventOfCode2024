@@ -1,4 +1,5 @@
 #include "../arena.h"
+#include "../math.h"
 #include "../slice.h"
 #include "../str.h"
 #include "../types.h"
@@ -13,12 +14,6 @@ static int CmpU32(const void *left, const void *right) {
   if (f < s)
     return -1;
   return 0;
-}
-
-static u32 AbsU32(u32 left, u32 right) {
-  if (left < right)
-    return right - left;
-  return left - right;
 }
 
 typedef struct SliceU32 SliceU32;
