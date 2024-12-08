@@ -12,6 +12,7 @@ static b32 s02check(StrSplit levels, usize skip) {
   } OrderDirection;
 
   usize begin = 0;
+
   if (skip == begin)
     begin++;
 

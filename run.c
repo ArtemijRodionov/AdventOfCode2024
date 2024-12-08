@@ -1,6 +1,8 @@
 
 #include "solutions/01.h"
 #include "solutions/02.h"
+#include "solutions/03.h"
+
 #include "str.h"
 #include "types.h"
 #include <assert.h>
@@ -21,6 +23,7 @@ struct Solution {
 static Solution solutions[] = {
     {.mark = "01", .fn = s01},
     {.mark = "02", .fn = s02},
+    {.mark = "03", .fn = s03},
 };
 
 Solution findSolution(const char *val) {
