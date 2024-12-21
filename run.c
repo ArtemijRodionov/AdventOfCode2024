@@ -2,17 +2,13 @@
 #include "solutions/01.h"
 #include "solutions/02.h"
 #include "solutions/03.h"
+#include "solutions/04.h"
 
 #include "str.h"
 #include "types.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct SolutionSelector SolutionSelector;
-typedef enum SolutionPart SolutionPart;
-
-void solutionOneA(Str input) { printf("%s", input.data); }
 
 typedef struct Solution Solution;
 struct Solution {
@@ -24,6 +20,7 @@ static Solution solutions[] = {
     {.mark = "01", .fn = s01},
     {.mark = "02", .fn = s02},
     {.mark = "03", .fn = s03},
+    {.mark = "04", .fn = s04},
 };
 
 Solution findSolution(const char *val) {
