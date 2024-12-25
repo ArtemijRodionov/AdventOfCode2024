@@ -67,6 +67,7 @@ static void s02AllowSkip(Str xs, b32 allowedSkips) {
     }
   }
   printf("%ld\n", safeReportsCount);
+  arena_free(&t);
 }
 
 static void s02(Str xs) {

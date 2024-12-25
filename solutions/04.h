@@ -1,3 +1,4 @@
+#include "../arena.h"
 #include "../slice.h"
 #include "../str.h"
 #include "../types.h"
@@ -19,7 +20,8 @@ static void s04a(Str xs) {
           isize newY = y;
 
           b32 valid = 1;
-          for (isize ci = 0; ci < sizeof(xmas); ci++) {
+          for (isize ci = 0, clen = sizeof(xmas) / sizeof(xmas[0]); ci < clen;
+               ci++) {
             if (newX < 0 || newY < 0 || newX >= lenX || newY >= lenY ||
                 xmas[ci] != lines.data[newY].data[newX]) {
               valid = 0;
@@ -36,6 +38,7 @@ static void s04a(Str xs) {
     }
   }
   printf("%zu\n", count);
+  arena_free(&tmp);
 }
 
 static b32 s04bcheck(StrSplit lines, isize lenX, isize lenY, isize x, isize y,
@@ -78,6 +81,7 @@ static void s04b(Str xs) {
     }
   }
   printf("%zu\n", count);
+  arena_free(&tmp);
 }
 
 static void s04(Str xs) {

@@ -105,4 +105,5 @@ static void s01(Str xs) {
   }
   s01a(&tmp, left, right);
   s01b(&tmp, left, right);
+  arena_free(&tmp);
 }
